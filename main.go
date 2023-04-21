@@ -4,6 +4,7 @@ import (
 	goflag "flag"
 	"log"
 
+	"github.com/Woody1193/miletos-test/cmds"
 	"github.com/spf13/cobra"
 	flag "github.com/spf13/pflag"
 )
@@ -20,6 +21,9 @@ var (
 )
 
 func init() {
+
+	// Add subcommands to root command
+	rootCmd.AddCommand(cmds.CheckCmd())
 
 	// Add Go flags to cobra
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
