@@ -16,3 +16,7 @@ github.com/spf13/pflag
 # github.com/xefino/goutils v1.1.51
 ## explicit; go 1.18
 github.com/xefino/goutils/collections
+github.com/xefino/goutils/strings
+# golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e
+## explicit; go 1.18
+golang.org/x/exp/constraints
