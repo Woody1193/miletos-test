@@ -19,21 +19,24 @@ func CheckCmd() *cobra.Command {
 		Long:  "Checkes that a receivables file matches an invoices file",
 		Run: func(cmd *cobra.Command, args []string) {
 
-			eh := new(io.ErrorHandler)
-
-			invoiceData, err := io.ReadCSV[string, *types.InvoiceItem](params.InvoiceFile, eh)
+			invoiceData, errResults, err := io.ReadCSV[string, *types.InvoiceItem](params.InvoiceFile)
 			if err != nil {
 				log.Fatalf("Failed to read invoice data, error: %v", err)
 			}
 
-			receivablesData, err := io.ReadCSV[string, *types.ReceivablesItem](params.ReceivablesFile, eh)
+			receivablesData, eh, err := io.ReadCSV[string, *types.ReceivablesItem](params.ReceivablesFile)
 			if err != nil {
 				log.Fatalf("Failed to read receivables data, error: %v", err)
 			}
 
-			rules := make([]rules.Rule, 0)
+			errResults = append(errResults, eh...)
+			if err := io.WriteCsv(params.ErrorFile, errResults...); err != nil {
+				log.Fatalf("Failed to write error file, error: %v", err)
+			}
 
-			results := batch.NewCheckBatch(invoiceData, receivablesData, rules...).Check()
+			results := batch.NewCheckBatch(invoiceData, receivablesData,
+				rules.InvoiceExists, rules.AmountsEqual, rules.PaidOnTime, rules.DateNotInFuture).Check()
+
 			if err := io.WriteCsv(params.OutputFile, results...); err != nil {
 				log.Fatalf("Failed to write output file, error: %v", err)
 			}

@@ -34,7 +34,7 @@ func (cb *CheckBatch) Check() []*types.CheckResult {
 		errs := make([]error, 0)
 		for _, rule := range cb.rules {
 
-			_, err := rule.Apply(invoiceItem, value)
+			_, err := rule(invoiceItem, value)
 			if err != nil {
 				errs = append(errs, err)
 			}
