@@ -9,9 +9,9 @@ import (
 
 // Contains a list of errors that can be returned by the Verify function
 var (
-	EmptyIDError = fmt.Errorf("ID was empty")
-	NoDueDate    = fmt.Errorf("Due Date was empty")
-	NoAmount     = fmt.Errorf("Amount was empty")
+	EmptyIDError  = fmt.Errorf("ID was empty")
+	NoDateError   = fmt.Errorf("Date was empty")
+	NoAmountError = fmt.Errorf("Amount was empty")
 )
 
 // InvoiceItem is a struct that contains the data for an invoice item
@@ -36,13 +36,13 @@ func (i *InvoiceItem) Verify() error {
 
 	// Next, check that the due date is not empty; if it is, return an error
 	if i.DueDate == nil {
-		return NoDueDate
+		return NoDateError
 	}
 
 	// Finally, check that the amount is not empty and that it is an integer
 	// value; if it is not, return an error
 	if i.Amount == nil {
-		return NoAmount
+		return NoAmountError
 	} else if i.Amount.Exponent() < 0 {
 		return fmt.Errorf("Amount of %s was invalid", i.Amount)
 	}
@@ -72,13 +72,13 @@ func (i *ReceivablesItem) Verify() error {
 
 	// Next, check that the date is not empty; if it is, return an error
 	if i.Date == nil {
-		return NoDueDate
+		return NoDateError
 	}
 
 	// Finally, check that the amount is not empty and that it is an integer
 	// value; if it is not, return an error
 	if i.Amount == nil {
-		return NoAmount
+		return NoAmountError
 	} else if i.Amount.Exponent() < 0 {
 		return fmt.Errorf("Amount of %s was invalid", i.Amount)
 	}
