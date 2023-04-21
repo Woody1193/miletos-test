@@ -35,7 +35,8 @@ func CheckCmd() *cobra.Command {
 			}
 
 			results := batch.NewCheckBatch(invoiceData, receivablesData,
-				rules.InvoiceExists, rules.AmountsEqual, rules.PaidOnTime, rules.DateNotInFuture).Check()
+				rules.InvoiceExists, rules.AmountsEqual, rules.PaidOnTime,
+				rules.DateNotInFuture, rules.NotPastDue).Check()
 
 			if err := io.WriteCsv(params.OutputFile, results...); err != nil {
 				log.Fatalf("Failed to write output file, error: %v", err)
