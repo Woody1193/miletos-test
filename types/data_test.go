@@ -35,7 +35,11 @@ var _ = Describe("Data Tests", func() {
 			}
 
 			// Verify that the item is invalid
-			Expect(item.Verify()).To(Equal(expected))
+			if expected == nil {
+				Expect(item.Verify()).To(BeNil())
+			} else {
+				Expect(item.Verify()).To(Equal(expected))
+			}
 		},
 		Entry("Empty ID", "", timePtr(time.Now()), decimalPtr(decimal.New(100, 0)), EmptyIDError),
 		Entry("Missing Due Date", "123", nil, decimalPtr(decimal.New(100, 0)), NoDateError),
@@ -68,7 +72,11 @@ var _ = Describe("Data Tests", func() {
 			}
 
 			// Verify that the item is invalid
-			Expect(item.Verify()).To(Equal(expected))
+			if expected == nil {
+				Expect(item.Verify()).To(BeNil())
+			} else {
+				Expect(item.Verify()).To(Equal(expected))
+			}
 		},
 		Entry("Empty ID", "", timePtr(time.Now()), decimalPtr(decimal.New(100, 0)), EmptyIDError),
 		Entry("Missing Date", "123", nil, decimalPtr(decimal.New(100, 0)), NoDateError),
