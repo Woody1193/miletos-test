@@ -1,3 +1,5 @@
+[![Unit Tests Status](https://github.com/Woody1193/miletos-test/actions/workflows/test.yml/badge.svg)](https://github.com/Woody1193/miletos-test/actions)
+
 # miletos-test
 This repository contains code that should serve as a solution to the case study presented to Miletos. This should not be used to inform potential candidates for future interviews, but may serve as an example of good coding practices for Go. The repository is intended to contain code for a fictional CLI that should contain a variety of invoicing tools.
 
