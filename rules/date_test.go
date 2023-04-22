@@ -51,7 +51,7 @@ var _ = Describe("Date Tests", func() {
 		Entry("Invoice due date is before receivables paid date",
 			&types.InvoiceItem{DueDate: timePtr(time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC))},
 			&types.ReceivablesItem{Date: timePtr(time.Date(2022, time.April, 23, 0, 0, 0, 0, time.UTC))}, false,
-			fmt.Errorf("Invoice due date of 2022-04-22 00:00:00 +0000 UTC is before receivables paid date of 2022-04-23 00:00:00 +0000 UTC")),
+			fmt.Errorf("Invoice due date of 2022-04-22 00:00:00 +0000 UTC is before receivables date of 2022-04-23 00:00:00 +0000 UTC")),
 		Entry("Invoice due date is after receivables paid date",
 			&types.InvoiceItem{DueDate: timePtr(time.Date(2022, time.April, 23, 0, 0, 0, 0, time.UTC))},
 			&types.ReceivablesItem{Date: timePtr(time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC))}, true, nil),
@@ -76,7 +76,7 @@ var _ = Describe("Date Tests", func() {
 		},
 		Entry("Receivables is nil", nil, true, nil),
 		Entry("Receivables date is in the future", &types.ReceivablesItem{Date: timePtr(today().AddDate(0, 2, 0))}, false,
-			fmt.Errorf("Receivables date of %s is in the future", today().AddDate(0, 2, 0))),
+			fmt.Errorf("Receivables date of %s is more than one month in the future", today().AddDate(0, 2, 0))),
 		Entry("Receivables date is in the past",
 			&types.ReceivablesItem{Date: timePtr(time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC))}, true, nil))
 })
