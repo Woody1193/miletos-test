@@ -22,6 +22,13 @@ type Keyer[TKey comparable] interface {
 	Verify() error
 }
 
+// Setup the CSV reader to fail if there are duplicate headers or if there are
+// unmatched struct tags.
+func init() {
+	gocsv.FailIfDoubleHeaderNames = true
+	gocsv.FailIfUnmatchedStructTags = true
+}
+
 // ReadCSV reads a CSV file and returns a map of the items in the file. The
 // path parameter is the path to the CSV file. This function requires two type
 // parameters: TKey and TItem. TKey is the type of the key that is used to map
@@ -53,9 +60,9 @@ func ReadCSV[TKey comparable, TItem Keyer[TKey]](path string) (*collections.Inde
 
 	// Iterate over the errors that were encountered while parsing the file and
 	// convert them to ErrorResult objects.
-	results := make([]*types.ErrorResult, len(eh.ParseErrors))
-	for i, err := range eh.ParseErrors {
-		results[i] = types.NewErrorResult(path, uint(err.Line), err)
+	results := collections.NewIndexedMap[uint, *types.ErrorResult]()
+	for _, err := range eh.ParseErrors {
+		results.Add(uint(err.Line), types.NewErrorResult(path, uint(err.Line), err), false)
 	}
 
 	// Now, iterate over the items in the file and add them to the map. If an item
@@ -71,19 +78,29 @@ func ReadCSV[TKey comparable, TItem Keyer[TKey]](path string) (*collections.Inde
 		// is invalid, record an error and continue to the next item.
 		copy := item
 		if err := copy.Verify(); err != nil {
-			results[i] = types.NewErrorResult(path, uint(i+1), err)
+			results.AddIf(uint(i+2), types.NewErrorResult(path, uint(i+2), err),
+				func(existing *types.ErrorResult, newItem *types.ErrorResult) bool {
+					existing.Error += "; " + newItem.Error
+					return false
+				})
+
 			continue
 		}
 
 		// Finally, attempt to add the item to the map. If the item is a duplicate,
 		// record an error and continue to the next item.
 		mapping.AddIf(key, copy, func(existing TItem, newItem TItem) bool {
-			results[i] = types.NewErrorResult(path, uint(i+1),
-				fmt.Errorf("Duplicate invoice ID of %v detected", key))
+			results.AddIf(uint(i+2), types.NewErrorResult(path, uint(i+2),
+				fmt.Errorf("Duplicate invoice ID of %v detected", key)),
+				func(existing *types.ErrorResult, newItem *types.ErrorResult) bool {
+					existing.Error += "; " + newItem.Error
+					return false
+				})
+
 			return false
 		})
 	}
 
 	// Finally, return the map of items and the errors that were encountered.
-	return mapping, results, nil
+	return mapping, results.Data(), nil
 }

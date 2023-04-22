@@ -16,9 +16,9 @@ var (
 
 // InvoiceItem is a struct that contains the data for an invoice item
 type InvoiceItem struct {
-	ID      string           `json:"ID" csv:"ID"`
-	DueDate *time.Time       `json:"Due Date" csv:"Due Date"`
-	Amount  *decimal.Decimal `json:"Amount" csv:"Amount"`
+	ID      string          `json:"ID" csv:"ID"`
+	DueDate time.Time       `json:"Due Date" csv:"Due Date"`
+	Amount  decimal.Decimal `json:"Amount" csv:"Amount"`
 }
 
 // Key returns the ID of the invoice item which uniquely identifies it
@@ -35,13 +35,13 @@ func (i *InvoiceItem) Verify() error {
 	}
 
 	// Next, check that the due date is not empty; if it is, return an error
-	if i.DueDate == nil {
+	if i.DueDate == (time.Time{}) {
 		return NoDateError
 	}
 
 	// Finally, check that the amount is not empty and that it is an integer
 	// value; if it is not, return an error
-	if i.Amount == nil {
+	if i.Amount.IsZero() {
 		return NoAmountError
 	} else if i.Amount.Exponent() < 0 {
 		return fmt.Errorf("Amount of %s was invalid", i.Amount)

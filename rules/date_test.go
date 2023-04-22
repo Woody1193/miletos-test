@@ -26,10 +26,10 @@ var _ = Describe("Date Tests", func() {
 				Expect(err).To(Equal(expected))
 			}
 		},
-		Entry("Receivables is not nil", &types.InvoiceItem{DueDate: timePtr(time.Now())}, &types.ReceivablesItem{}, true, nil),
-		Entry("Invoice date is in the past", &types.InvoiceItem{DueDate: timePtr(time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC))}, nil, false,
+		Entry("Receivables is not nil", &types.InvoiceItem{DueDate: time.Now()}, &types.ReceivablesItem{}, true, nil),
+		Entry("Invoice date is in the past", &types.InvoiceItem{DueDate: time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC)}, nil, false,
 			fmt.Errorf("Invoice due date of 2022-04-22 00:00:00 +0000 UTC has past")),
-		Entry("Invoice date is in the future", &types.InvoiceItem{DueDate: timePtr(time.Now().AddDate(0, 0, 1))}, nil, true, nil))
+		Entry("Invoice date is in the future", &types.InvoiceItem{DueDate: time.Now().AddDate(0, 0, 1)}, nil, true, nil))
 
 	// Tests the PaidOnTime function under various conditions
 	DescribeTable("PaidOnTime - Conditions",
@@ -49,14 +49,14 @@ var _ = Describe("Date Tests", func() {
 		Entry("Invoice is nil", nil, &types.ReceivablesItem{}, true, nil),
 		Entry("Receivables is nil", &types.InvoiceItem{}, nil, true, nil),
 		Entry("Invoice due date is before receivables paid date",
-			&types.InvoiceItem{DueDate: timePtr(time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC))},
+			&types.InvoiceItem{DueDate: time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC)},
 			&types.ReceivablesItem{Date: timePtr(time.Date(2022, time.April, 23, 0, 0, 0, 0, time.UTC))}, false,
 			fmt.Errorf("Invoice due date of 2022-04-22 00:00:00 +0000 UTC is before receivables date of 2022-04-23 00:00:00 +0000 UTC")),
 		Entry("Invoice due date is after receivables paid date",
-			&types.InvoiceItem{DueDate: timePtr(time.Date(2022, time.April, 23, 0, 0, 0, 0, time.UTC))},
+			&types.InvoiceItem{DueDate: time.Date(2022, time.April, 23, 0, 0, 0, 0, time.UTC)},
 			&types.ReceivablesItem{Date: timePtr(time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC))}, true, nil),
 		Entry("Invoice due date is equal to receivables paid date",
-			&types.InvoiceItem{DueDate: timePtr(time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC))},
+			&types.InvoiceItem{DueDate: time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC)},
 			&types.ReceivablesItem{Date: timePtr(time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC))}, true, nil))
 
 	// Tests the DateNotInFuture function under various conditions
@@ -64,7 +64,7 @@ var _ = Describe("Date Tests", func() {
 		func(rec *types.ReceivablesItem, okay bool, expected error) {
 
 			// Run the function and collect the results
-			f, err := DateNotInFuture(&types.InvoiceItem{DueDate: timePtr(time.Now())}, rec)
+			f, err := DateNotInFuture(&types.InvoiceItem{DueDate: time.Now()}, rec)
 
 			// Verify that the results are correct
 			Expect(f).To(Equal(okay))

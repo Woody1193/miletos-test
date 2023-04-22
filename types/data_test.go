@@ -25,7 +25,7 @@ var _ = Describe("Data Tests", func() {
 
 	// Tests that the Verify function works correctly under various conditions
 	DescribeTable("InvoiceItem - Verify - Conditions",
-		func(id string, dueDate *time.Time, amount *decimal.Decimal, expected error) {
+		func(id string, dueDate time.Time, amount decimal.Decimal, expected error) {
 
 			// Create a new invoice item
 			item := InvoiceItem{
@@ -41,12 +41,12 @@ var _ = Describe("Data Tests", func() {
 				Expect(item.Verify()).To(Equal(expected))
 			}
 		},
-		Entry("Empty ID", "", timePtr(time.Now()), decimalPtr(decimal.New(100, 0)), EmptyIDError),
-		Entry("Missing Due Date", "123", nil, decimalPtr(decimal.New(100, 0)), NoDateError),
-		Entry("Missing Amount", "123", timePtr(time.Now()), nil, NoAmountError),
-		Entry("Invalid Amount", "123", timePtr(time.Now()), decimalPtr(decimal.New(1001, -1)),
+		Entry("Empty ID", "", time.Now(), decimal.New(100, 0), EmptyIDError),
+		Entry("Missing Due Date", "123", time.Time{}, decimal.New(100, 0), NoDateError),
+		Entry("Missing Amount", "123", time.Now(), decimal.Zero, NoAmountError),
+		Entry("Invalid Amount", "123", time.Now(), decimal.New(1001, -1),
 			fmt.Errorf("Amount of 100.1 was invalid")),
-		Entry("No Errors", "123", timePtr(time.Now()), decimalPtr(decimal.New(100, 0)), nil))
+		Entry("No Errors", "123", time.Now(), decimal.New(100, 0), nil))
 
 	// Tests that the Key function works correctly
 	It("ReceivablesItem - Key - Works", func() {

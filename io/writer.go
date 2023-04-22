@@ -19,7 +19,11 @@ func WriteCsv[TItem any](path string, items ...TItem) error {
 	// leak file descriptors.
 	defer file.Close()
 
+	// Now, create a CSV writer that uses tabs as the delimiter.
+	writer := gocsv.DefaultCSVWriter(file)
+	writer.Comma = '\t'
+
 	// Finally, attempt to write the items to the file; if this fails, return the
 	// error.
-	return gocsv.MarshalFile(items, file)
+	return gocsv.MarshalCSV(items, writer)
 }
