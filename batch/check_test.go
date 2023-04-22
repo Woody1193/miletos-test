@@ -1,6 +1,7 @@
 package batch
 
 import (
+	"sort"
 	"testing"
 	"time"
 
@@ -60,6 +61,11 @@ var _ = Describe("Check Tests", func() {
 			rules.NotPastDue,
 		).Check()
 
+		// Sort the results by ID so we can verify them in a consistent order
+		sort.Slice(results, func(i, j int) bool {
+			return results[i].ID < results[j].ID
+		})
+
 		// Finally, verify that the results are as expected
 		Expect(results).Should(HaveLen(5))
 		verifyCheckResult(results[0], "123", 2, 2,
@@ -69,9 +75,9 @@ var _ = Describe("Check Tests", func() {
 			"Invoice amount of 45099 does not match receivables amount of 15099")
 		verifyCheckResult(results[2], "125", 4, 4,
 			"Receivables date of 2023-06-22 00:00:00 +0000 UTC is more than one month in the future")
-		verifyCheckResult(results[3], "127", 0, 5, "Invoice does not exist")
-		verifyCheckResult(results[4], "126", 5, 0,
+		verifyCheckResult(results[3], "126", 5, 0,
 			"Invoice due date of 2022-08-04 00:00:00 +0000 UTC has past")
+		verifyCheckResult(results[4], "127", 0, 5, "Invoice does not exist")
 	})
 })
 
