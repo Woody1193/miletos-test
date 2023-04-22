@@ -1,6 +1,10 @@
 # miletos-test
 このリポジトリには、Miletosに提示されたケーススタディの解決策として役立つコードが含まれています。将来の面接のための候補者に情報提供するために使用しないでくださいが、Goの良いコーディングプラクティスの例として役立つかもしれません。このリポジトリは、さまざまな請求書作成ツールを含む架空のCLIのコードを含むことを意図しています。
 
+## 言語のこと
+[![English](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/Woody1193/miletos-test/blob/main/README.md)
+[![日本語](https://img.shields.io/badge/lang-jp-green.svg)](https://github.com/Woody1193/miletos-test/blob/main/README.jp.md)
+
 ## checkコマンド
 checkコマンドは、請求書ファイルと売掛金ファイル間の取引が複数の基準に従って一致するかどうかを検証します。現在、以下のチェックがサポートされています：
 
