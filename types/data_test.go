@@ -28,11 +28,7 @@ var _ = Describe("Data Tests", func() {
 		func(id string, dueDate time.Time, amount decimal.Decimal, expected error) {
 
 			// Create a new invoice item
-			item := InvoiceItem{
-				ID:      id,
-				DueDate: dueDate,
-				Amount:  amount,
-			}
+			item := NewInvoiceItem(id, dueDate, amount)
 
 			// Verify that the item is invalid
 			if expected == nil {
@@ -65,11 +61,7 @@ var _ = Describe("Data Tests", func() {
 		func(id string, date time.Time, amount decimal.Decimal, expected error) {
 
 			// Create a new receivables item
-			item := ReceivablesItem{
-				ID:     id,
-				Date:   date,
-				Amount: amount,
-			}
+			item := NewReceivablesItem(id, date, amount)
 
 			// Verify that the item is invalid
 			if expected == nil {

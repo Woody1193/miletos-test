@@ -21,6 +21,15 @@ type InvoiceItem struct {
 	Amount  decimal.Decimal `json:"Amount" csv:"Amount"`
 }
 
+// NewInvoiceItem creates a new InvoiceItem with the provided ID, date, and amount
+func NewInvoiceItem(id string, date time.Time, amount decimal.Decimal) *InvoiceItem {
+	return &InvoiceItem{
+		ID:      id,
+		DueDate: date,
+		Amount:  amount,
+	}
+}
+
 // Key returns the ID of the invoice item which uniquely identifies it
 func (i *InvoiceItem) Key() string {
 	return i.ID
@@ -55,6 +64,15 @@ type ReceivablesItem struct {
 	ID     string          `json:"ID" csv:"ID"`
 	Date   time.Time       `json:"Date" csv:"Date"`
 	Amount decimal.Decimal `json:"Amount" csv:"Amount"`
+}
+
+// NewReceivablesItem creates a new ReceivablesItem with the provided ID, date, and amount
+func NewReceivablesItem(id string, date time.Time, amount decimal.Decimal) *ReceivablesItem {
+	return &ReceivablesItem{
+		ID:     id,
+		Date:   date,
+		Amount: amount,
+	}
 }
 
 // Key returns the ID of the receivables item which uniquely identifies it

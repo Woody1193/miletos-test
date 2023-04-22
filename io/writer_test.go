@@ -17,16 +17,8 @@ var _ = Describe("Writer Tests", func() {
 
 		// First, create some data to write
 		data := []*types.InvoiceItem{
-			{
-				ID:      "123",
-				Amount:  decimal.New(400, 0),
-				DueDate: time.Date(2022, time.May, 4, 0, 0, 0, 0, time.UTC),
-			},
-			{
-				ID:      "124",
-				Amount:  decimal.New(45099, 0),
-				DueDate: time.Date(2022, time.June, 4, 0, 0, 0, 0, time.UTC),
-			},
+			types.NewInvoiceItem("123", time.Date(2022, time.May, 4, 0, 0, 0, 0, time.UTC), decimal.New(400, 0)),
+			types.NewInvoiceItem("124", time.Date(2022, time.June, 4, 0, 0, 0, 0, time.UTC), decimal.New(45099, 0)),
 		}
 
 		// Next, attempt to write to a nonexistent CSV file; this should not fail
