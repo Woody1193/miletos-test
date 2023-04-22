@@ -29,7 +29,7 @@ The `invoice_file` parameter specifies the file path to the invoice file. This f
 The `receivables_file` parameter specifies the file path to the receivables file. This file should be a CSV file that contains the following columns:
 
 - **ID (string):** A unique identifier for the receivable.
-- **Amount (integer):** The amount received in USD.
+- **Amount (integer):** The amount received in JPY.
 - **Date (date):** The date on which the amount was received, in `YYYY-MM-DDThh:mm:ssZ` format.
 
 ### Command Output
