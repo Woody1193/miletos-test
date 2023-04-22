@@ -22,25 +22,25 @@ The check command requires two input files and two output files. If these are no
 
 The `invoice_file` parameter specifies the file path to the invoice file. This file should be a CSV file that contains the following columns:
 
-- *ID (string):* A unique identifier for the invoice.
-- *Amount (integer):* The amount of the invoice in JPY.
-- *Due Date (date):* The date by which the invoice must be paid, in `YYYY-MM-DDThh:mm:ssZ` format.
+- **ID (string):** A unique identifier for the invoice.
+- **Amount (integer):** The amount of the invoice in JPY.
+- **Due Date (date):** The date by which the invoice must be paid, in `YYYY-MM-DDThh:mm:ssZ` format.
 
 The `receivables_file` parameter specifies the file path to the receivables file. This file should be a CSV file that contains the following columns:
 
-- *ID (string):* A unique identifier for the receivable.
-- *Amount (integer):* The amount received in USD.
-- *Date (date):* The date on which the amount was received, in `YYYY-MM-DDThh:mm:ssZ` format.
+- **ID (string):** A unique identifier for the receivable.
+- **Amount (integer):** The amount received in USD.
+- **Date (date):** The date on which the amount was received, in `YYYY-MM-DDThh:mm:ssZ` format.
 
 ### Command Output
 The check command will not produce any output if there were no errors. The `output_file` will contain all instances where any rule check failed.
 
 The `output_file` will include the following information:
 
-- *ID (string):* The ID of the invoice for which an error occurred
-- *Invoices File Line (integer):* The line in the invoices file corresponding to this error
-- *Receivables File Line (integer):* The line in the receivables file corresponding to this error
-- *Description (string):* A description of the issue(s) that occurred. There may be more than one.
+- **ID (string):** The ID of the invoice for which an error occurred
+- **Invoices File Line (integer):** The line in the invoices file corresponding to this error
+- **Receivables File Line (integer):** The line in the receivables file corresponding to this error
+- **Description (string):** A description of the issue(s) that occurred. There may be more than one.
 
 The `error_file` will also be produced by this command and shall contain information on data that could not be handled and why. If data is written to this file then it will not be checked by the command, as doing so would be impossible. Data will be written to this file under the following conditions:
 
@@ -51,9 +51,9 @@ The `error_file` will also be produced by this command and shall contain informa
 
 The `error_file` will include the following information:
 
-- *File (string):* The name of the file that contained the bad data
-- *Line (integer):* The line containing the error
-- *Description (string):* A description of the error
+- **File (string):** The name of the file that contained the bad data
+- **Line (integer):** The line containing the error
+- **Description (string):** A description of the error
 
 ### Error Conditions
 The check command may generate errors under the following conditions:
