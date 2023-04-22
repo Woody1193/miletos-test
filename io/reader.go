@@ -2,7 +2,7 @@ package io
 
 import (
 	"fmt"
-	"os"
+	"io"
 
 	"github.com/Woody1193/miletos-test/types"
 	"github.com/gocarina/gocsv"
@@ -37,28 +37,19 @@ func init() {
 // items in the file. The second return value is a slice of errors that were
 // encountered while parsing the file. The third return value is an error that
 // was encountered while reading the file.
-func ReadCSV[TKey comparable, TItem Keyer[TKey]](path string) (*collections.IndexedMap[TKey, TItem], []*types.ErrorResult, error) {
+func ReadCSV[TKey comparable, TItem Keyer[TKey]](reader io.Reader,
+	path string) (*collections.IndexedMap[TKey, TItem], []*types.ErrorResult, error) {
 	eh := new(ErrorHandler)
 
-	// First, attempt to open the file; if this fails, return the error.
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	// Ensure that the file is closed when the function exits so we don't leak
-	// file descriptors.
-	defer file.Close()
-
-	// Next, attempt to parse the file; if this fails, return the error. Although we
+	// First, attempt to parse the file; if this fails, return the error. Although we
 	// use an error handler, we still need to check the error return value because
 	// gocsv can still return an error if the file is empty or the headers could not be read
 	data := make([]TItem, 0)
-	if err := gocsv.UnmarshalWithErrorHandler(file, eh.HandleParseError, &data); err != nil {
+	if err := gocsv.UnmarshalWithErrorHandler(reader, eh.HandleParseError, &data); err != nil {
 		return nil, nil, err
 	}
 
-	// Iterate over the errors that were encountered while parsing the file and
+	// Next, iterate over the errors that were encountered while parsing the file and
 	// convert them to ErrorResult objects.
 	results := collections.NewIndexedMap[uint, *types.ErrorResult]()
 	for _, err := range eh.ParseErrors {

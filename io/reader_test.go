@@ -1,6 +1,7 @@
 package io
 
 import (
+	"bytes"
 	"sort"
 	"time"
 
@@ -12,25 +13,11 @@ import (
 var _ = Describe("Reader Tests", func() {
 
 	// Tests that the ReadCSV function returns an error when
-	// it is passed a nonexistent CSV file
-	It("ReadCSV - Open fails - Error", func() {
-
-		// Attempt to read from a nonexistent CSV file; this should fail
-		data, results, err := ReadCSV[string, *types.InvoiceItem]("nonexistent.csv")
-
-		// Verify that we retrieved no data and no results and that an error was returned
-		Expect(data).Should(BeNil())
-		Expect(results).Should(BeNil())
-		Expect(err).Should(HaveOccurred())
-		Expect(err.Error()).Should(Equal("open nonexistent.csv: no such file or directory"))
-	})
-
-	// Tests that the ReadCSV function returns an error when
 	// it is passed a CSV file that is not properly formatted
 	It("ReadCSV - UnmarshalWithErrorHandler fails - Error", func() {
 
 		// Attempt to read from a CSV file that will fail to unmarshal; this should fail
-		data, results, err := ReadCSV[string, *types.InvoiceItem]("failure.csv")
+		data, results, err := ReadCSV[string, *types.InvoiceItem](bytes.NewBufferString("ID,Amount\n"), "failure.csv")
 
 		// Verify that we retrieved no data and no results and that an error was returned
 		Expect(data).Should(BeNil())
@@ -42,8 +29,13 @@ var _ = Describe("Reader Tests", func() {
 	// Tests that the ReadCSV function returns the expected data
 	It("ReadCSV - Success", func() {
 
+		fileData := "ID,Amount,Due Date\n,400,2022-05-04T00:00:00Z\n123,,2022-05-04T00:00:00Z\n" +
+			"124,derp,2022-05-04T00:00:00Z\n125,450.99,2022-05-04T00:00:00Z\n126,500,\n" +
+			"127,600,derp\n128,700,2022-05-04T00:00:00Z\n128,800,2022-05-04T00:00:00Z\n" +
+			"129,1000,2022-06-04T00:00:00Z\n130,250,2022-05-02T00:00:00Z\n"
+
 		// Attempt to read from a CSV file that will fail to unmarshal; this should not fail
-		data, results, err := ReadCSV[string, *types.InvoiceItem]("success.csv")
+		data, results, err := ReadCSV[string, *types.InvoiceItem](bytes.NewBufferString(fileData), "success.csv")
 		Expect(err).ShouldNot(HaveOccurred())
 
 		// Verify that we retrieved the expected data
