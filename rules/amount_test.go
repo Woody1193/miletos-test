@@ -29,8 +29,8 @@ var _ = Describe("Amount Tests", func() {
 		Entry("Invoice is nil", nil, &types.ReceivablesItem{}, true, nil),
 		Entry("Receivables is nil", &types.InvoiceItem{}, nil, true, nil),
 		Entry("Invoice and receivables amounts do not match", &types.InvoiceItem{Amount: decimal.New(100, 0)},
-			&types.ReceivablesItem{Amount: decimalPtr(decimal.New(200, 0))}, false,
+			&types.ReceivablesItem{Amount: decimal.New(200, 0)}, false,
 			fmt.Errorf("Invoice amount of 100 does not match receivables amount of 200")),
 		Entry("Invoice and receivables amounts match", &types.InvoiceItem{Amount: decimal.New(100, 0)},
-			&types.ReceivablesItem{Amount: decimalPtr(decimal.New(100, 0))}, true, nil))
+			&types.ReceivablesItem{Amount: decimal.New(100, 0)}, true, nil))
 })

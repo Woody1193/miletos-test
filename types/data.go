@@ -52,9 +52,9 @@ func (i *InvoiceItem) Verify() error {
 
 // ReceivablesItem is a struct that contains the data for a receivables item
 type ReceivablesItem struct {
-	ID     string           `json:"ID" csv:"ID"`
-	Date   *time.Time       `json:"Date" csv:"Date"`
-	Amount *decimal.Decimal `json:"Amount" csv:"Amount"`
+	ID     string          `json:"ID" csv:"ID"`
+	Date   time.Time       `json:"Date" csv:"Date"`
+	Amount decimal.Decimal `json:"Amount" csv:"Amount"`
 }
 
 // Key returns the ID of the receivables item which uniquely identifies it
@@ -71,13 +71,13 @@ func (i *ReceivablesItem) Verify() error {
 	}
 
 	// Next, check that the date is not empty; if it is, return an error
-	if i.Date == nil {
+	if i.Date == (time.Time{}) {
 		return NoDateError
 	}
 
 	// Finally, check that the amount is not empty and that it is an integer
 	// value; if it is not, return an error
-	if i.Amount == nil {
+	if i.Amount.IsZero() {
 		return NoAmountError
 	} else if i.Amount.Exponent() < 0 {
 		return fmt.Errorf("Amount of %s was invalid", i.Amount)

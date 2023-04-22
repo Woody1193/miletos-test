@@ -23,7 +23,7 @@ func NotPastDue(invoiceItem *types.InvoiceItem, receivablesItem *types.Receivabl
 // function expects that, if invoiceItem and receivablesItem are not nil, then
 // the due date is not nil and the receivables date is not nil.
 func PaidOnTime(invoiceItem *types.InvoiceItem, receivablesItem *types.ReceivablesItem) (bool, error) {
-	if receivablesItem != nil && invoiceItem != nil && invoiceItem.DueDate.Before(*receivablesItem.Date) {
+	if receivablesItem != nil && invoiceItem != nil && invoiceItem.DueDate.Before(receivablesItem.Date) {
 		return false, fmt.Errorf("Invoice due date of %s is before receivables date of %s",
 			invoiceItem.DueDate, receivablesItem.Date)
 	}
