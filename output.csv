@@ -1,0 +1,5 @@
+Invoices File Line	Receivables File Line	ID	Description
+0	6	127	Invoice does not exist
+2	2	123	Invoice due date of 2022-05-04 00:00:00 +0000 UTC is before receivables date of 2022-07-04 00:00:00 +0000 UTC
+4	4	124	Invoice amount of 45099 does not match receivables amount of 15099
+6	0	126	Invoice due date of 2022-08-04 00:00:00 +0000 UTC has past

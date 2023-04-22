@@ -1,0 +1,8 @@
+File	Line	Error
+invoices.csv	5	record on line 0; parse error on line 5, column 2: error decoding string '': can't convert  to decimal; Amount was empty
+invoices.csv	8	record on line 0; parse error on line 8, column 2: error decoding string 'derp': can't convert derp to decimal: exponent is not numeric; Amount was empty
+invoices.csv	3	ID was empty
+receivables.csv	3	"record on line 0; parse error on line 3, column 3: parsing time """" as ""2006-01-02T15:04:05Z07:00"": cannot parse """" as ""2006""; Date was empty"
+receivables.csv	5	"record on line 0; parse error on line 5, column 3: parsing time ""derp"" as ""2006-01-02T15:04:05Z07:00"": cannot parse ""derp"" as ""2006""; Date was empty"
+receivables.csv	7	Duplicate invoice ID of 127 detected
+receivables.csv	9	Amount of 450.99 was invalid
