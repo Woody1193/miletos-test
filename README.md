@@ -13,7 +13,6 @@ The check command verifies that the transactions between an invoice file and a r
 The syntax for the check command is as follows:
 
 ``` bash
-Copy code
 invtools check --invoice <invoice_file> --receivables <receivables_file> --output <output_file> --error <error_file>
 ```
 
