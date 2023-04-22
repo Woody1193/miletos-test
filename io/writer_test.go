@@ -17,8 +17,8 @@ var _ = Describe("Writer Tests", func() {
 
 		// First, create some data to write
 		data := []*types.InvoiceItem{
-			types.NewInvoiceItem("123", time.Date(2022, time.May, 4, 0, 0, 0, 0, time.UTC), decimal.New(400, 0)),
-			types.NewInvoiceItem("124", time.Date(2022, time.June, 4, 0, 0, 0, 0, time.UTC), decimal.New(45099, 0)),
+			types.NewInvoiceItem("123", time.Date(2022, time.May, 4, 0, 0, 0, 0, time.UTC), decimal.New(400, 0), 2),
+			types.NewInvoiceItem("124", time.Date(2022, time.June, 4, 0, 0, 0, 0, time.UTC), decimal.New(45099, 0), 3),
 		}
 
 		// Next, attempt to write to a nonexistent CSV file; this should not fail
@@ -27,7 +27,7 @@ var _ = Describe("Writer Tests", func() {
 
 		// Finally, verify that the data was written
 		Expect(err).ShouldNot(HaveOccurred())
-		Expect(string(buffer.Bytes())).Should(Equal("ID,Amount,Due Date\n" +
-			"123,400,2022-05-04T00:00:00Z\n124,450.99,2022-06-04T00:00:00Z\n"))
+		Expect(string(buffer.Bytes())).Should(Equal("ID\tDue Date\tAmount\n" +
+			"123\t2022-05-04T00:00:00Z\t400\n124\t2022-06-04T00:00:00Z\t45099\n"))
 	})
 })

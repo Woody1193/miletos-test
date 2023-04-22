@@ -20,6 +20,9 @@ type Keyer[TKey comparable] interface {
 
 	// Verify returns an error if the item is invalid.
 	Verify() error
+
+	// SetLine sets the line number associated with the item.
+	SetLine(uint)
 }
 
 // Setup the CSV reader to fail if there are duplicate headers or if there are
@@ -78,16 +81,14 @@ func ReadCSV[TKey comparable, TItem Keyer[TKey]](reader io.Reader,
 			continue
 		}
 
+		// Now, set the line associated with this item
+		copy.SetLine(uint(i + 2))
+
 		// Finally, attempt to add the item to the map. If the item is a duplicate,
 		// record an error and continue to the next item.
 		mapping.AddIf(key, copy, func(existing TItem, newItem TItem) bool {
-			results.AddIf(uint(i+2), types.NewErrorResult(path, uint(i+2),
-				fmt.Errorf("Duplicate invoice ID of %v detected", key)),
-				func(existing *types.ErrorResult, newItem *types.ErrorResult) bool {
-					existing.Error += "; " + newItem.Error
-					return false
-				})
-
+			results.Add(uint(i+2), types.NewErrorResult(path, uint(i+2),
+				fmt.Errorf("Duplicate invoice ID of %v detected", key)), false)
 			return false
 		})
 	}

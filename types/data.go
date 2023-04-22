@@ -19,14 +19,16 @@ type InvoiceItem struct {
 	ID      string          `json:"ID" csv:"ID"`
 	DueDate time.Time       `json:"Due Date" csv:"Due Date"`
 	Amount  decimal.Decimal `json:"Amount" csv:"Amount"`
+	Line    uint            `json:"-" csv:"-"`
 }
 
 // NewInvoiceItem creates a new InvoiceItem with the provided ID, date, and amount
-func NewInvoiceItem(id string, date time.Time, amount decimal.Decimal) *InvoiceItem {
+func NewInvoiceItem(id string, date time.Time, amount decimal.Decimal, line uint) *InvoiceItem {
 	return &InvoiceItem{
 		ID:      id,
 		DueDate: date,
 		Amount:  amount,
+		Line:    line,
 	}
 }
 
@@ -59,19 +61,26 @@ func (i *InvoiceItem) Verify() error {
 	return nil
 }
 
+// SetLine sets the line number of the invoice item
+func (i *InvoiceItem) SetLine(line uint) {
+	i.Line = line
+}
+
 // ReceivablesItem is a struct that contains the data for a receivables item
 type ReceivablesItem struct {
 	ID     string          `json:"ID" csv:"ID"`
 	Date   time.Time       `json:"Date" csv:"Date"`
 	Amount decimal.Decimal `json:"Amount" csv:"Amount"`
+	Line   uint            `json:"-" csv:"-"`
 }
 
 // NewReceivablesItem creates a new ReceivablesItem with the provided ID, date, and amount
-func NewReceivablesItem(id string, date time.Time, amount decimal.Decimal) *ReceivablesItem {
+func NewReceivablesItem(id string, date time.Time, amount decimal.Decimal, line uint) *ReceivablesItem {
 	return &ReceivablesItem{
 		ID:     id,
 		Date:   date,
 		Amount: amount,
+		Line:   line,
 	}
 }
 
@@ -102,4 +111,9 @@ func (i *ReceivablesItem) Verify() error {
 	}
 
 	return nil
+}
+
+// SetLine sets the line number of the receivables item
+func (i *ReceivablesItem) SetLine(line uint) {
+	i.Line = line
 }

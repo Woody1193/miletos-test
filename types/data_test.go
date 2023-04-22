@@ -23,12 +23,28 @@ var _ = Describe("Data Tests", func() {
 		Expect(item.Key()).To(Equal("123"))
 	})
 
+	// Tests that the SetLine function works correctly
+	It("InvoiceItem - SetLine - Works", func() {
+
+		// Create a new invoice item
+		item := InvoiceItem{
+			ID:   "123",
+			Line: 2,
+		}
+
+		// Set the line number
+		item.SetLine(3)
+
+		// Verify that the line number was set
+		Expect(item.Line).To(Equal(uint(3)))
+	})
+
 	// Tests that the Verify function works correctly under various conditions
 	DescribeTable("InvoiceItem - Verify - Conditions",
 		func(id string, dueDate time.Time, amount decimal.Decimal, expected error) {
 
 			// Create a new invoice item
-			item := NewInvoiceItem(id, dueDate, amount)
+			item := NewInvoiceItem(id, dueDate, amount, 0)
 
 			// Verify that the item is invalid
 			if expected == nil {
@@ -56,12 +72,28 @@ var _ = Describe("Data Tests", func() {
 		Expect(item.Key()).To(Equal("123"))
 	})
 
+	// Tests that the SetLine function works correctly
+	It("ReceivablesItem - SetLine - Works", func() {
+
+		// Create a new receivables item
+		item := ReceivablesItem{
+			ID:   "123",
+			Line: 2,
+		}
+
+		// Set the line
+		item.SetLine(3)
+
+		// Verify that the line was set correctly
+		Expect(item.Line).To(Equal(uint(3)))
+	})
+
 	// Tests that the Verify function works correctly under various conditions
 	DescribeTable("ReceivablesItem - Verify - Conditions",
 		func(id string, date time.Time, amount decimal.Decimal, expected error) {
 
 			// Create a new receivables item
-			item := NewReceivablesItem(id, date, amount)
+			item := NewReceivablesItem(id, date, amount, 0)
 
 			// Verify that the item is invalid
 			if expected == nil {

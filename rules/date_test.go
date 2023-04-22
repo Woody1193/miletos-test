@@ -7,6 +7,7 @@ import (
 	"github.com/Woody1193/miletos-test/types"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	xtime "github.com/xefino/goutils/time"
 )
 
 var _ = Describe("Date Tests", func() {
@@ -75,8 +76,8 @@ var _ = Describe("Date Tests", func() {
 			}
 		},
 		Entry("Receivables is nil", nil, true, nil),
-		Entry("Receivables date is in the future", &types.ReceivablesItem{Date: today().AddDate(0, 2, 0)}, false,
-			fmt.Errorf("Receivables date of %s is more than one month in the future", today().AddDate(0, 2, 0))),
+		Entry("Receivables date is in the future", &types.ReceivablesItem{Date: xtime.Today().AddDate(0, 2, 0)}, false,
+			fmt.Errorf("Receivables date of %s is more than one month in the future", xtime.Today().AddDate(0, 2, 0))),
 		Entry("Receivables date is in the past",
 			&types.ReceivablesItem{Date: time.Date(2022, time.April, 22, 0, 0, 0, 0, time.UTC)}, true, nil))
 })

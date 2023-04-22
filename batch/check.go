@@ -54,15 +54,14 @@ func (cb *CheckBatch) Check() []*types.CheckResult {
 				Description: strings.Join(collections.Convert(func(err error) string { return err.Error() }, errs...), "; "),
 			}
 
-			// Next, find the line numbers of the invoice; if we can't find it, set it to 0
-			invIndex, ok := cb.invoiceData.Index(key)
-			if ok {
-				result.InvoicesFileLine = invIndex + 1
+			// Next, find the line numbers of the invoice; if we can't find it then do nothing
+			if invoiceItem != nil {
+				result.InvoicesFileLine = invoiceItem.Line
 			}
 
 			// Finally, find the line numbers of the receivables and add the check result to the
 			// list of results
-			result.ReceivablesFileLine, _ = cb.receivablesData.Index(key)
+			result.ReceivablesFileLine = value.Line
 			results = append(results, &result)
 		}
 
@@ -81,8 +80,9 @@ func (cb *CheckBatch) Check() []*types.CheckResult {
 		for _, rule := range cb.rules {
 			if _, err := rule(value, nil); err != nil {
 				results = append(results, &types.CheckResult{
-					ID:          value.ID,
-					Description: err.Error(),
+					ID:               value.ID,
+					Description:      err.Error(),
+					InvoicesFileLine: value.Line,
 				})
 			}
 		}
