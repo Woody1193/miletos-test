@@ -49,7 +49,8 @@ func CheckCmd() *cobra.Command {
 				log.Fatalf("Failed to write output file, error: %v", err)
 			}
 
-			log.Printf("Check complete. Results written to %q", params.OutputFile)
+			log.Printf("Check complete. Results written to %q, errors written to %q",
+				params.OutputFile, params.ErrorFile)
 		},
 	}
 
